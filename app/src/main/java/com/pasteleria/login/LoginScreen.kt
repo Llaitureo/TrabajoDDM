@@ -1,4 +1,4 @@
-package com.huertohogar.login
+package com.pasteleria.login
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,10 +20,10 @@ import androidx.compose.ui.unit.dp
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-import com.huertohogar.ui.login.LoginViewModel
-import com.huertohogar.ui.theme.BlancoSuave
-import com.huertohogar.ui.theme.HuertohogarTheme
-import com.huertohogar.ui.theme.TextoPrincipal
+import com.pasteleria.ui.login.LoginViewModel
+import com.pasteleria.ui.theme.BlancoSuave
+import com.pasteleria.ui.theme.HuertohogarTheme
+import com.pasteleria.ui.theme.TextoPrincipal
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,7 +32,7 @@ import com.huertohogar.ui.theme.TextoPrincipal
 fun LoginScreen(
     vm: LoginViewModel= viewModel()
 ){
-    val satate = vm.uiState
+    val state = vm.uiState
     var showPass by remember { mutableStateOf(false) }
 
     //Colores
@@ -40,7 +40,7 @@ fun LoginScreen(
 
         Scaffold(
             topBar = {
-                TopAppBar(title = { Text(text = "HuertoHogar",
+                TopAppBar(title = { Text(text = "Pastelería",
                     color = TextoPrincipal) })
             }
         ){

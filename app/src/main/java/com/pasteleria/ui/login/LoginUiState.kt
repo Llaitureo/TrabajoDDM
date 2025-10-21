@@ -1,4 +1,4 @@
-package com.huertohogar.ui.login
+package com.pasteleria.ui.login
 
 data class LoginUiState (
     val username:String = "",

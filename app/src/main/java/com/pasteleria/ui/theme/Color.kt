@@ -1,4 +1,4 @@
-package com.huertohogar.ui.theme
+package com.pasteleria.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

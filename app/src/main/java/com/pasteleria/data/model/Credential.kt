@@ -1,4 +1,4 @@
-package com.huertohogar.data.model
+package com.pasteleria.data.model
 
 data class Credential (val username:String, val password:String){
     companion object{

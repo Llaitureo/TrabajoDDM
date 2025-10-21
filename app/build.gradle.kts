@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.huertohogar"
+    namespace = "com.pasteleria"
     compileSdk = 36
 
     defaultConfig {

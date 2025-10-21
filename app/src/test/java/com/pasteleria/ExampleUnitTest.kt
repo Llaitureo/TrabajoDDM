@@ -1,4 +1,4 @@
-package com.huertohogar
+package com.pasteleria
 
 import org.junit.Test
 

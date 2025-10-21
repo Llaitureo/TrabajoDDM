@@ -1,10 +1,10 @@
-package com.huertohogar.ui.login
+package com.pasteleria.ui.login
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.huertohogar.data.repository.AuthRepository
+import com.pasteleria.data.repository.AuthRepository
 
 class LoginViewModel (
     private val repo: AuthRepository = AuthRepository()

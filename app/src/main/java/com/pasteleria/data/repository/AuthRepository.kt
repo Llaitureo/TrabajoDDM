@@ -1,5 +1,5 @@
-package com.huertohogar.data.repository;
-import com.huertohogar.data.model.Credential;
+package com.pasteleria.data.repository;
+import com.pasteleria.data.model.Credential;
 
 class AuthRepository (
     private val validCredential:Credential = Credential.admin
