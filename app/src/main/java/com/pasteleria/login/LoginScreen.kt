@@ -58,14 +58,14 @@ fun BakeryLoginScreen(
     val lightPinkBackground = Color(0xFFFCE4EC)
     val hintTextColor = Color(0xFF8D6E63)
 
-    // --- TEMAS (Personalización de MaterialTheme) ---
+
     // Creamos un ColorScheme personalizado para usar nuestros colores.
     val BakeryColorScheme = lightColorScheme(
         primary = primaryBrown,            // Color principal (botones, texto destacado)
         onPrimary = Color.White,           // Color del texto sobre el primary
         background = lightPinkBackground,  // Color de fondo de la pantalla
         onBackground = primaryBrown,       // Color del texto sobre el fondo
-        surface = Color.White,             // Fondo de componentes (ej. TextField, Card)
+        surface = Color.White,             // Fondo de componentes
         onSurface = primaryBrown,          // Color del texto sobre surface
 
         outline = hintTextColor
@@ -119,8 +119,8 @@ fun BakeryLoginScreen(
 
                 // --- Campo de Texto para Email/Usuario ---
                 OutlinedTextField(
-                    value = username,
-                    onValueChange = { username = it },
+                    value = vm.uiState.username,
+                    onValueChange = vm::onUsernameChange,
                     label = {
                         Text(
                             "Usuario",
@@ -143,8 +143,8 @@ fun BakeryLoginScreen(
 
                 // --- Campo de Texto para Contraseña ---
                 OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
+                    value = vm.uiState.password,
+                    onValueChange = vm::onPasswordChange,
                     label = {
                         Text(
                             "Contraseña",
@@ -182,7 +182,12 @@ fun BakeryLoginScreen(
                 // --- Botón de Login ---
                 Button(
                     onClick = {
-                        println("Usuario de Pastelería: $username | Contraseña: $password")
+                        vm.submit { username ->
+                            navController.navigate("home/$username"){
+                                popUpTo("login"){ inclusive = true }
+                                launchSingleTop = true
+                            }
+                        }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -197,6 +202,7 @@ fun BakeryLoginScreen(
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimary // El texto será blanco
                     )
+
                 }
             }
         }
