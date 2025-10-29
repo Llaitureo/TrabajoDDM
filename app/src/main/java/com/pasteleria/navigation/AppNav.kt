@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.pasteleria.login.BakeryLoginScreen
+import com.pasteleria.ui.register.BakeryRegisterScreen
 import com.pasteleria.ui.home.HomeScreem
 import com.pasteleria.ui.pedido.PedidoScreen
 
@@ -19,6 +20,11 @@ fun AppNav(){
         composable(route= "login"){
             BakeryLoginScreen(navController)
         }
+
+        composable(route = "register") {
+            BakeryRegisterScreen(navController = navController)
+        }
+
         composable(
             route = "home/{username}",
             arguments = listOf(

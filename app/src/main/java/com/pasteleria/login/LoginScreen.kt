@@ -24,6 +24,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -204,17 +205,18 @@ fun BakeryLoginScreen(
                     )
 
                 }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                TextButton(onClick = { navController.navigate("register") }) {
+                    Text(
+                        "¿No tienes cuenta? Regístrate aquí",
+                        color = MaterialTheme.colorScheme.primary // Color marrón
+                    )
+                }
             }
         }
     }
 }
 
 // --- PREVIEW ---
-@Preview(showBackground = true) // showSystemUi ya no da error si lo eliminas
-@Composable
-fun BakeryLoginScreenPreview() {
-    val navController = rememberNavController()
-    val vm = LoginViewModel()
 
-    BakeryLoginScreen(navController = navController, vm = vm)
-}
