@@ -43,6 +43,11 @@ import com.pasteleria.R
 import com.pasteleria.ui.theme.HuertohogarTheme
 import com.pasteleria.ui.theme.Marron
 import com.pasteleria.ui.theme.rosado
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Receipt
+import androidx.compose.material.icons.filled.ReceiptLong // Ícono de boleta
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 
 data class Producto(
     val nombre: String,
@@ -75,7 +80,18 @@ fun HomeScreem(
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = rosado,
                         titleContentColor = Marron
-                    )
+                    ),
+                    actions = {
+                        IconButton(onClick = {
+                            navController.navigate("boleta")
+                        }){
+                            Icon(
+                                imageVector = Icons.Default.ReceiptLong,
+                                contentDescription = "vae boleta",
+                                tint = Marron
+                            )
+                        }
+                    }
                 )
             }
         ) { innerPadding ->
