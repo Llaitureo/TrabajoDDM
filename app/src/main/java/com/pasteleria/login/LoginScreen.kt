@@ -45,7 +45,6 @@ import com.pasteleria.R
 import com.pasteleria.ui.theme.BlancoSuave
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.compose.rememberNavController
 import com.pasteleria.ui.login.LoginViewModel
 
 @Composable
@@ -66,17 +65,13 @@ fun BakeryLoginScreen(
         onBackground = primaryBrown,
         surface = Color.White,
         onSurface = primaryBrown,
-
         outline = hintTextColor
     )
 
-    val defaultTypography = Typography
     MaterialTheme(
         colorScheme = BakeryColorScheme
     ) {
         // --- ESTADO ---
-        var username by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
         var showPassword by remember { mutableStateOf(false) }
 
         Surface(
@@ -172,6 +167,14 @@ fun BakeryLoginScreen(
                         unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                     )
                 )
+
+                vm.uiState.error?.let { error ->
+                    Text(
+                        text = error,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(48.dp))
 
