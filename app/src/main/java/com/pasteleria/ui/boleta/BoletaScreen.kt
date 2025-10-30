@@ -7,41 +7,29 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.pasteleria.R // Asegúrate de que R se importe correctamente para los drawables
 import com.pasteleria.ui.theme.HuertohogarTheme
 import com.pasteleria.ui.theme.Marron
 import com.pasteleria.ui.theme.rosado
 
-// NOTA: Re-utilizamos la data class y la lista de HomeScreem.
-// Idealmente, esto debería estar en un archivo de modelo compartido.
-data class Producto(
-    val nombre: String,
-    val precio: Int,
-    val imagenResId: Int
-)
-
-val listaDeProductos = listOf(
-    Producto("Torta de Chocolate", 14000, R.drawable.tortachocolate),
-    Producto("Cupcakes (6 un.)", 2000, R.drawable.cupcake2),
-    Producto("Donas (12 un.)", 2000, R.drawable.donut),
-    Producto("Pie de Limón", 16000, R.drawable.pastry),
-    Producto("Galletas Surtidas", 1500, R.drawable.cookie)
-)
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BoletaScreen(navController: NavController) {
+fun BoletaScreen(
+    navController: NavController,
+    boletaViewModel: BoletaViewModel
+) {
 
-    // Calculamos el total
-    val total = listaDeProductos.sumOf { it.precio }
+    val itemsDelPedido by boletaViewModel.pedidos.collectAsState()
+
+    val total = itemsDelPedido.sumOf { it.producto.precio * it.cantidad }
 
     HuertohogarTheme {
         Scaffold(
@@ -49,13 +37,13 @@ fun BoletaScreen(navController: NavController) {
                 TopAppBar(
                     title = { Text("Boleta / Resumen") },
                     navigationIcon = {
-                        IconButton(onClick = { navController.popBackStack() }) {
+                        IconButton(onClick = { navController.popBackStack() }) {//sin esto no hay como salir.
                             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = rosado, // Usando el color de tu app
-                        titleContentColor = Marron // Usando el color de tu app
+                        containerColor = rosado,
+                        titleContentColor = Marron
                     )
                 )
             }
@@ -72,17 +60,15 @@ fun BoletaScreen(navController: NavController) {
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                // Lista de productos
                 LazyColumn(
-                    modifier = Modifier.weight(1f) // Ocupa el espacio disponible
+                    modifier = Modifier.weight(1f)
                 ) {
-                    items(listaDeProductos) { producto ->
-                        ProductoBoletaItem(producto = producto)
-                        Divider() // Línea divisoria
+                    items(itemsDelPedido) { item ->
+                        ProductoBoletaItem(item = item)
+                        Divider()
                     }
                 }
 
-                // Total
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = "Total: $$total",
@@ -96,7 +82,7 @@ fun BoletaScreen(navController: NavController) {
 }
 
 @Composable
-fun ProductoBoletaItem(producto: Producto) {
+fun ProductoBoletaItem(item: PedidoItem) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -105,18 +91,18 @@ fun ProductoBoletaItem(producto: Producto) {
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = producto.nombre,
+                text = item.producto.nombre,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium
             )
             Text(
-                text = "1 unidad", // Asumimos 1 unidad por ahora
+                text = "${item.cantidad} unidad(es)",
                 style = MaterialTheme.typography.bodySmall,
                 color = Color.Gray
             )
         }
-        Text(
-            text = "$${producto.precio}",
+        Text(//Total General
+            text = "$${item.producto.precio * item.cantidad}",//Muestra lo añadido
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary

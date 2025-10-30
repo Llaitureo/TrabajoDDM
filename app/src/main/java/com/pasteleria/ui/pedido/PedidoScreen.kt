@@ -19,20 +19,29 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.pasteleria.ui.boleta.BoletaViewModel
+import com.pasteleria.ui.home.Producto
 import com.pasteleria.ui.theme.HuertohogarTheme
 import java.net.URLDecoder
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PedidoScreen(
     navController: NavController,
     nombre: String,
-    precio: String,
-    imagenResId: Int
+    precio: Int,
+    imagenResId: Int,
+    boletaViewModel: BoletaViewModel
 ) {
+    val productoActual = Producto(
+        nombre = nombre,
+        precio = precio,
+        imagenResId = imagenResId
+    )
 
     var cantidad by remember { mutableStateOf(1) }
-    val nombreDecodificado = remember { URLDecoder.decode(nombre, "UTF-8") }
+    val nombreDecodificado = remember { URLDecoder.decode(nombre, "UTF-8") }//Por si trae caracteres especiales
 
     HuertohogarTheme {
         Scaffold(
@@ -103,8 +112,7 @@ fun PedidoScreen(
                 // --- Botón de Confirmar ---
                 Button(
                     onClick = {
-                        // TODO: Aquí irá la lógica para guardar el pedido
-                        // Por ahora, solo vuelve a la pantalla anterior
+                        boletaViewModel.agregarPedido(productoActual, cantidad)//confirma para llenar la lista.
                         navController.popBackStack()
                     },
                     modifier = Modifier

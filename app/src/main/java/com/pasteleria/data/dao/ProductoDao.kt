@@ -16,5 +16,5 @@ interface ProductoDao {
     suspend fun insertAll(productos: List<Producto>)
 
     @Query("SELECT * FROM productos")
-    fun getAllProductos(): Flow<List<Producto>> // Usar Flow es clave
+    fun getAllProductos(): Flow<List<Producto>>
 }
