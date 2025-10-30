@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.pasteleria.data.model.User
-import kotlinx.coroutines.flow.Flow // Opcional si quieres observar cambios
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -14,11 +14,10 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: User)
 
-    // Busca un usuario por su nombre de usuario
     @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
-    suspend fun getUserByUsername(username: String): User? // Puede ser null si no existe
+    suspend fun getUserByUsername(username: String): User?
 
-    // Opcional: Obtener todos los usuarios (para debug o listas)
+    //Obtiene a todos los usuarios
     @Query("SELECT * FROM users")
-    fun getAllUsers(): Flow<List<User>> // Flow para observar cambios
+    fun getAllUsers(): Flow<List<User>>
 }

@@ -27,15 +27,12 @@ import com.pasteleria.ui.theme.BlancoSuave // Asegúrate que esta importación s
 @Composable
 fun BakeryRegisterScreen(
     navController: NavController
-    // Podrías añadir un ViewModel aquí si quieres lógica de registro real
 ) {
 
-    // --- Colores (iguales a LoginScreen) ---
     val primaryBrown = Color(0xFF6D4C41)
     val lightPinkBackground = Color(0xFFFCE4EC)
     val hintTextColor = Color(0xFF8D6E63)
 
-    // --- ColorScheme (igual a LoginScreen) ---
     val BakeryColorScheme = lightColorScheme(
         primary = primaryBrown,
         onPrimary = Color.White,
@@ -44,8 +41,8 @@ fun BakeryRegisterScreen(
         surface = Color.White,
         onSurface = primaryBrown,
         outline = hintTextColor,
-        // Añadimos un color secundario para el botón Cancelar
-        secondary = hintTextColor, // Puedes usar otro color si prefieres
+
+        secondary = hintTextColor,
         onSecondary = Color.White
     )
 
@@ -60,7 +57,6 @@ fun BakeryRegisterScreen(
         var showConfirmPassword by remember { mutableStateOf(false) }
         var passwordsMatch by remember { mutableStateOf(true) } // Para validar si coinciden
 
-        // --- Layout ---
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
@@ -70,7 +66,7 @@ fun BakeryRegisterScreen(
                     .fillMaxSize()
                     .padding(horizontal = 32.dp, vertical = 64.dp)
                     .background(
-                        color = BlancoSuave, // Usando tu color BlancoSuave
+                        color = BlancoSuave,
                         shape = RoundedCornerShape(16.dp)
                     ),
                 verticalArrangement = Arrangement.Center,
@@ -86,9 +82,9 @@ fun BakeryRegisterScreen(
 
                 // --- Icono ---
                 Image(
-                    painter = painterResource(id = R.drawable.cupcake), // Reutilizamos el cupcake
+                    painter = painterResource(id = R.drawable.cupcake),
                     contentDescription = "Icono Registro",
-                    modifier = Modifier.size(100.dp) // Un poco más pequeño
+                    modifier = Modifier.size(100.dp)
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))
@@ -100,7 +96,7 @@ fun BakeryRegisterScreen(
                     label = { Text("Nuevo Usuario", color = MaterialTheme.colorScheme.outline) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors( // Estilo igual a Login
+                    colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = MaterialTheme.colorScheme.primary,
                         unfocusedBorderColor = hintTextColor,
                         focusedLabelColor = MaterialTheme.colorScheme.primary,
@@ -117,7 +113,6 @@ fun BakeryRegisterScreen(
                     value = password,
                     onValueChange = {
                         password = it
-                        // Validar si coinciden al cambiar la contraseña
                         passwordsMatch = password == confirmPassword
                     },
                     label = { Text("Nueva Contraseña", color = MaterialTheme.colorScheme.outline) },
@@ -133,7 +128,7 @@ fun BakeryRegisterScreen(
                             )
                         }
                     },
-                    colors = OutlinedTextFieldDefaults.colors( // Estilo igual a Login
+                    colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = MaterialTheme.colorScheme.primary,
                         unfocusedBorderColor = hintTextColor,
                         focusedLabelColor = MaterialTheme.colorScheme.primary,
@@ -141,7 +136,7 @@ fun BakeryRegisterScreen(
                         focusedTextColor = MaterialTheme.colorScheme.onSurface,
                         unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                     ),
-                    // Marcar error si no coinciden
+                    // Marca error si no coincide la contraseña
                     isError = !passwordsMatch
                 )
 
@@ -152,7 +147,7 @@ fun BakeryRegisterScreen(
                     value = confirmPassword,
                     onValueChange = {
                         confirmPassword = it
-                        // Validar si coinciden al cambiar la confirmación
+                        // Valida si coinciden al cambiar la confirmación
                         passwordsMatch = password == confirmPassword
                     },
                     label = { Text("Confirmar Contraseña", color = MaterialTheme.colorScheme.outline) },
@@ -176,11 +171,11 @@ fun BakeryRegisterScreen(
                         focusedTextColor = MaterialTheme.colorScheme.onSurface,
                         unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                     ),
-                    // Marcar error si no coinciden
+                    // Marca error si no coinciden
                     isError = !passwordsMatch
                 )
 
-                // Mensaje de error si las contraseñas no coinciden
+                // Mensaje de error por contraseña distinta
                 if (!passwordsMatch) {
                     Text(
                         "Las contraseñas no coinciden",
@@ -201,15 +196,15 @@ fun BakeryRegisterScreen(
                     // --- Botón Cancelar ---
                     Button(
                         onClick = {
-                            // Vuelve a la pantalla anterior (Login)
+                            // Vuelve al login
                             navController.popBackStack()
                         },
                         modifier = Modifier
-                            .weight(1f) // Ocupa la mitad del espacio
+                            .weight(1f)
                             .height(56.dp)
-                            .padding(end = 8.dp), // Espacio entre botones
+                            .padding(end = 8.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary // Color secundario
+                            containerColor = MaterialTheme.colorScheme.secondary
                         )
                     ) {
                         Text(
@@ -223,23 +218,20 @@ fun BakeryRegisterScreen(
                     // --- Botón Registrar ---
                     Button(
                         onClick = {
-                            // TODO: Añadir lógica de registro real (ViewModel)
-                            // Por ahora, solo imprime y vuelve al login
                             println("Registrando Usuario: $username")
-                            // Navega al login después de "registrar"
                             navController.navigate("login") {
                                 popUpTo("login") { inclusive = true }
                                 launchSingleTop = true
                             }
                         },
                         modifier = Modifier
-                            .weight(1f) // Ocupa la mitad del espacio
+                            .weight(1f)
                             .height(56.dp)
-                            .padding(start = 8.dp), // Espacio entre botones
+                            .padding(start = 8.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary // Marrón
+                            containerColor = MaterialTheme.colorScheme.primary
                         ),
-                        // Habilitar solo si los campos no están vacíos Y las contraseñas coinciden
+                        // Habilita solo si los campos no están vacíos Y las contraseñas coinciden
                         enabled = username.isNotBlank() && password.isNotBlank() && confirmPassword.isNotBlank() && passwordsMatch
                     ) {
                         Text(
@@ -249,7 +241,7 @@ fun BakeryRegisterScreen(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
-                } // Fin Row Botones
+                } // Fin Row
             } // Fin Column
         } // Fin Surface
     } // Fin MaterialTheme

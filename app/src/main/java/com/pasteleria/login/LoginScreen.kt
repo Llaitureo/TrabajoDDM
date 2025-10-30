@@ -1,6 +1,5 @@
 package com.pasteleria.login
 
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -60,32 +59,29 @@ fun BakeryLoginScreen(
     val hintTextColor = Color(0xFF8D6E63)
 
 
-    // Creamos un ColorScheme personalizado para usar nuestros colores.
     val BakeryColorScheme = lightColorScheme(
-        primary = primaryBrown,            // Color principal (botones, texto destacado)
-        onPrimary = Color.White,           // Color del texto sobre el primary
-        background = lightPinkBackground,  // Color de fondo de la pantalla
-        onBackground = primaryBrown,       // Color del texto sobre el fondo
-        surface = Color.White,             // Fondo de componentes
-        onSurface = primaryBrown,          // Color del texto sobre surface
+        primary = primaryBrown,
+        onPrimary = Color.White,
+        background = lightPinkBackground,
+        onBackground = primaryBrown,
+        surface = Color.White,
+        onSurface = primaryBrown,
 
         outline = hintTextColor
     )
 
-    // Aplicamos el tema a toda la pantalla
     val defaultTypography = Typography
     MaterialTheme(
-        colorScheme = BakeryColorScheme// <-- Ahora sí funciona
+        colorScheme = BakeryColorScheme
     ) {
         // --- ESTADO ---
         var username by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
         var showPassword by remember { mutableStateOf(false) }
 
-        // --- LAYOUT con Surface para el fondo ---
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background // Usa el color de fondo definido en nuestro tema
+            color = MaterialTheme.colorScheme.background
         ) {
             Column(
                 modifier = Modifier
@@ -93,7 +89,7 @@ fun BakeryLoginScreen(
                     .padding(horizontal = 32.dp, vertical = 64.dp)
                     .background(
                         color = BlancoSuave,
-                        shape = RoundedCornerShape(16.dp) // <-- Aquí está el "border-radius"
+                        shape = RoundedCornerShape(16.dp)
                     )
                 ,
                 // Más padding horizontal
@@ -109,23 +105,22 @@ fun BakeryLoginScreen(
                 Spacer(modifier = Modifier.height(32.dp))
 
                 // --- Icono de Cupcake ---
-                // Necesitarás un recurso de imagen en res/drawable
                 Image(
-                    painter = painterResource(id = R.drawable.cupcake), // Reemplaza con tu drawable
+                    painter = painterResource(id = R.drawable.cupcake),
                     contentDescription = "Cupcake Icon",
-                    modifier = Modifier.size(120.dp) // Tamaño del icono
+                    modifier = Modifier.size(120.dp)
                 )
 
                 Spacer(modifier = Modifier.height(48.dp))
 
-                // --- Campo de Texto para Email/Usuario ---
+                // --- Campo de Texto para Usuario ---
                 OutlinedTextField(
                     value = vm.uiState.username,
                     onValueChange = vm::onUsernameChange,
                     label = {
                         Text(
                             "Usuario",
-                            color = MaterialTheme.colorScheme.outline // Usa el color hint
+                            color = MaterialTheme.colorScheme.outline
                         )
                     },
                     singleLine = true,
@@ -149,7 +144,7 @@ fun BakeryLoginScreen(
                     label = {
                         Text(
                             "Contraseña",
-                            color = MaterialTheme.colorScheme.outline // Usa el color hint
+                            color = MaterialTheme.colorScheme.outline
                         )
                     },
                     singleLine = true,
@@ -194,14 +189,14 @@ fun BakeryLoginScreen(
                         .fillMaxWidth()
                         .height(56.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary // Usa el marrón oscuro
+                        containerColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
                     Text(
                         "Ingresar",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary // El texto será blanco
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
 
                 }
@@ -210,13 +205,10 @@ fun BakeryLoginScreen(
                 TextButton(onClick = { navController.navigate("register") }) {
                     Text(
                         "¿No tienes cuenta? Regístrate aquí",
-                        color = MaterialTheme.colorScheme.primary // Color marrón
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
         }
     }
 }
-
-// --- PREVIEW ---
-

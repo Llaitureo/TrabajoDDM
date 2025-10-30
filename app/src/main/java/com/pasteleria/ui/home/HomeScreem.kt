@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,23 +39,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.pasteleria.R // Importa tus recursos, incluyendo R.drawable.cupcake
-import com.pasteleria.ui.login.LoginViewModel
+import com.pasteleria.R
 import com.pasteleria.ui.theme.HuertohogarTheme
 import com.pasteleria.ui.theme.Marron
-import com.pasteleria.ui.theme.MarronClaro
-import com.pasteleria.ui.theme.TextoPrincipal
-import com.pasteleria.ui.theme.VerdeEsmeralda
 import com.pasteleria.ui.theme.rosado
 
-// 1. Un data class simple para representar un producto
 data class Producto(
     val nombre: String,
     val precio: Int,
-    val imagenResId: Int // Usaremos un ID de drawable
+    val imagenResId: Int //
 )
-
-// 2. Lista de productos de ejemplo (puedes mover esto a un ViewModel más tarde)
+//ejemplo propio
 val listaDeProductos = listOf(
     Producto("Torta de Chocolate", 14000, R.drawable.tortachocolate),
     Producto("Cupcakes (6 un.)", 2000, R.drawable.cupcake2),
@@ -62,6 +57,9 @@ val listaDeProductos = listOf(
     Producto("Pie de Limón", 16000, R.drawable.pastry),
     Producto("Galletas Surtidas", 1500, R.drawable.cookie)
 )
+
+//Para remplazar al schema por el momento
+val primaryBrown = Color( 0xFF6D4C41)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,21 +73,19 @@ fun HomeScreem(
                 TopAppBar(
                     title = { Text(text = "¡Hola, $username!") },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = rosado, // Color de tu tema
+                        containerColor = rosado,
                         titleContentColor = Marron
                     )
                 )
             }
         ) { innerPadding ->
-            // Usamos LazyColumn para una lista eficiente
             LazyColumn(
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize(),
                 contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp) // Espacio entre tarjetas
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Título de la sección
                 item {
                     Text(
                         text = "Nuestros Productos",
@@ -98,7 +94,6 @@ fun HomeScreem(
                     )
                 }
 
-                // Creamos un item por cada producto en la lista
                 items(listaDeProductos) { producto ->
                     ProductoCard(
                         producto = producto,
@@ -112,7 +107,7 @@ fun HomeScreem(
                     )
                 }
 
-                // Botón de cerrar sesión al final
+                // Botón de cerrar sesión
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
@@ -124,7 +119,7 @@ fun HomeScreem(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = VerdeEsmeralda
+                            containerColor = primaryBrown
                         )
                     ) {
                         Text("Cerrar sesión")
@@ -139,7 +134,7 @@ fun HomeScreem(
 fun ProductoCard(
     producto: Producto,
 
-    onProductoClick: () -> Unit // Acción al hacer clic
+    onProductoClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -147,7 +142,7 @@ fun ProductoCard(
             .clickable(onClick = onProductoClick),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface // Color de fondo de la tarjeta
+            containerColor = MaterialTheme.colorScheme.surface //Color de fondo
         )
     ) {
         Row(
@@ -160,15 +155,15 @@ fun ProductoCard(
                 contentDescription = producto.nombre,
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(MaterialTheme.shapes.medium), // Bordes redondeados
-                contentScale = ContentScale.Crop // Asegura que la imagen llene el espacio
+                    .clip(MaterialTheme.shapes.medium), //Bordes redondos
+                contentScale = ContentScale.Crop //Asegura que la imagen llene el espacio
             )
 
             Spacer(modifier = Modifier.width(16.dp))
 
             // --- Título y Precio ---
             Column(
-                modifier = Modifier.weight(1f) // Ocupa el espacio restante
+                modifier = Modifier.weight(1f) //Ocupa el espacio restante
             ) {
                 Text(
                     text = producto.nombre,
@@ -177,9 +172,9 @@ fun ProductoCard(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "$${producto.precio}", // Formato de precio
+                    text = "$${producto.precio}", //Formato
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.primary, // Color destacado
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 16.sp
                 )
             }
@@ -188,6 +183,7 @@ fun ProductoCard(
 
 
 }
+// --- PREVIEW ---
 @Preview (showBackground = true)
 @Composable
 fun HomeScreemPreview(){

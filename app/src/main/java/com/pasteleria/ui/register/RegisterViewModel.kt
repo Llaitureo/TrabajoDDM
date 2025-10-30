@@ -1,4 +1,4 @@
-package com.pasteleria.ui.register // Asegúrate que la ruta sea correcta
+package com.pasteleria.ui.register
 
 import android.app.Application
 import androidx.compose.runtime.getValue
@@ -11,7 +11,6 @@ import com.pasteleria.data.model.User
 import com.pasteleria.data.repository.UserRepository
 import kotlinx.coroutines.launch
 
-// Estado para la UI de registro
 data class RegisterUiState(
     val username: String = "",
     val password: String = "",
@@ -21,7 +20,6 @@ data class RegisterUiState(
     val registrationSuccess: Boolean = false
 )
 
-// Usamos AndroidViewModel para tener acceso al Context para la BD
 class RegisterViewModel(application: Application) : AndroidViewModel(application) {
 
     private val userRepository: UserRepository
@@ -29,12 +27,11 @@ class RegisterViewModel(application: Application) : AndroidViewModel(application
         private set
 
     init {
-        // Inicializamos el repositorio obteniendo el DAO desde la BD
+
         val userDao = AppDatabase.getDatabase(application).userDao()
         userRepository = UserRepository(userDao)
     }
 
-    // Funciones para actualizar el estado desde la UI
     fun onUsernameChange(value: String) {
         uiState = uiState.copy(username = value.trim(), error = null)
     }
@@ -52,7 +49,7 @@ class RegisterViewModel(application: Application) : AndroidViewModel(application
             uiState.password != uiState.confirmPassword) {
             uiState = uiState.copy(error = "Las contraseñas no coinciden")
         } else {
-            uiState = uiState.copy(error = null) // Limpia el error si coinciden o están vacíos
+            uiState = uiState.copy(error = null) //Limpia el error si coinciden o están vacíos
         }
     }
 
@@ -76,12 +73,12 @@ class RegisterViewModel(application: Application) : AndroidViewModel(application
 
         viewModelScope.launch {
             try {
-                // 1. Verifica si el usuario ya existe
+                //Verifica si el usuario ya existe
                 val existingUser = userRepository.findUserByUsername(uiState.username)
                 if (existingUser != null) {
                     uiState = uiState.copy(isLoading = false, error = "El nombre de usuario ya existe")
                 } else {
-                    // 2. Crea el nuevo usuario (¡Recuerda hashear la contraseña en una app real!)
+                    // 2. Crea el nuevo usuario
                     val newUser = User(username = uiState.username, passwordHash = uiState.password)
                     userRepository.insertUser(newUser)
                     uiState = uiState.copy(isLoading = false, registrationSuccess = true)
@@ -92,7 +89,6 @@ class RegisterViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    // Para resetear el estado después de un registro exitoso si es necesario
     fun registrationHandled() {
         uiState = uiState.copy(registrationSuccess = false)
     }

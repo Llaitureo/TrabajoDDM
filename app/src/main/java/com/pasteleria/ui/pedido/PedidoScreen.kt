@@ -30,9 +30,8 @@ fun PedidoScreen(
     precio: String,
     imagenResId: Int
 ) {
-    // Variable para guardar la cantidad
+
     var cantidad by remember { mutableStateOf(1) }
-    // Decodificamos el nombre por si tiene espacios (ej. "Pie de Limón")
     val nombreDecodificado = remember { URLDecoder.decode(nombre, "UTF-8") }
 
     HuertohogarTheme {
@@ -40,7 +39,6 @@ fun PedidoScreen(
             topBar = {
                 TopAppBar(
                     title = { Text("Detalle del Producto") },
-                    // Este es el botón para devolverse que pediste
                     navigationIcon = {
                         IconButton(onClick = { navController.popBackStack() }) {
                             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
@@ -60,7 +58,6 @@ fun PedidoScreen(
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // --- Imagen Grande ---
                 Image(
                     painter = painterResource(id = imagenResId),
                     contentDescription = nombreDecodificado,
@@ -91,17 +88,17 @@ fun PedidoScreen(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // --- Selector de Cantidad ---
+                //--- Selector de Cantidad ---
                 QuantitySelector(
                     cantidad = cantidad,
                     onCantidadChange = { nuevaCantidad ->
-                        if (nuevaCantidad >= 1) { // No permitir cantidad 0 o menor
+                        if (nuevaCantidad >= 1) { //No permite cantidad 0 o menor
                             cantidad = nuevaCantidad
                         }
                     }
                 )
 
-                Spacer(modifier = Modifier.weight(1f)) // Empuja el botón al fondo
+                Spacer(modifier = Modifier.weight(1f))
 
                 // --- Botón de Confirmar ---
                 Button(
@@ -121,9 +118,6 @@ fun PedidoScreen(
     }
 }
 
-/**
- * Un Composable reutilizable para el selector de cantidad "- 1 +"
- */
 @Composable
 fun QuantitySelector(
     cantidad: Int,
@@ -136,12 +130,12 @@ fun QuantitySelector(
             .fillMaxWidth()
             .padding(vertical = 8.dp)
     ) {
-        // Botón de Restar
+        //Botón de Restar
         IconButton(onClick = { onCantidadChange(cantidad - 1) }) {
             Icon(Icons.Default.Remove, contentDescription = "Restar uno")
         }
 
-        // Texto de Cantidad
+        //Texto de Cantidad
         Text(
             text = "$cantidad",
             style = MaterialTheme.typography.headlineMedium,

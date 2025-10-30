@@ -1,4 +1,4 @@
-package com.pasteleria.ui.register // O la ruta que hayas elegido, por ejemplo com.pasteleria.ui.auth
+package com.pasteleria.ui.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,39 +8,33 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
-import androidx.compose.runtime.* // Necesario para LaunchedEffect, remember, mutableStateOf, etc.
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel // Importa viewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.pasteleria.R // Asegúrate que esta importación sea correcta para tus recursos (R.drawable.cupcake)
-import com.pasteleria.ui.theme.BlancoSuave // Importa tu color personalizado
-// Asegúrate de que la ruta a RegisterViewModel es correcta
-import com.pasteleria.ui.register.RegisterViewModel // Importa tu ViewModel
-
-@OptIn(ExperimentalMaterial3Api::class) // Necesario para Scaffold, TopAppBar, OutlinedTextField
+import com.pasteleria.R
+import com.pasteleria.ui.theme.BlancoSuave
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BakeryRegisterScreen(
     navController: NavController,
-    vm: RegisterViewModel = viewModel() // <-- Inyecta el ViewModel
+    vm: RegisterViewModel = viewModel()
 ) {
     val uiState = vm.uiState // Obtiene el estado del ViewModel
 
-    // --- Colores (iguales a LoginScreen) ---
     val primaryBrown = Color(0xFF6D4C41)
     val lightPinkBackground = Color(0xFFFCE4EC)
     val hintTextColor = Color(0xFF8D6E63)
 
-    // --- ColorScheme (igual a LoginScreen) ---
     val BakeryColorScheme = lightColorScheme(
         primary = primaryBrown,
         onPrimary = Color.White,
@@ -49,15 +43,14 @@ fun BakeryRegisterScreen(
         surface = Color.White,
         onSurface = primaryBrown,
         outline = hintTextColor,
-        secondary = hintTextColor, // Color para el botón Cancelar
+        secondary = hintTextColor,
         onSecondary = Color.White,
-        error = Color.Red // Color para mensajes de error
+        error = Color.Red
     )
 
-    // Efecto para navegar cuando el registro es exitoso
     LaunchedEffect(uiState.registrationSuccess) {
         if (uiState.registrationSuccess) {
-            // Navega directamente al login
+            // Navega al login
             navController.navigate("login") {
                 popUpTo("login") { inclusive = true }
                 launchSingleTop = true
@@ -71,27 +64,24 @@ fun BakeryRegisterScreen(
         var showPassword by remember { mutableStateOf(false) }
         var showConfirmPassword by remember { mutableStateOf(false) }
 
-        // Usamos Surface para el fondo general, Column para el contenido centrado
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background // Fondo rosa pálido
+            color = MaterialTheme.colorScheme.background
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 32.dp, vertical = 32.dp), // Menos padding vertical para que quepa todo
+                    .padding(horizontal = 32.dp, vertical = 32.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Contenedor blanco redondeado
                 Column(
                     modifier = Modifier
-                        //.fillMaxSize() // Quita fillMaxSize aquí para que se ajuste al contenido
                         .background(
-                            color = BlancoSuave, // Color blanco suave
+                            color = BlancoSuave,
                             shape = RoundedCornerShape(16.dp)
                         )
-                        .padding(horizontal = 24.dp, vertical = 32.dp), // Padding interno del contenedor blanco
+                        .padding(horizontal = 24.dp, vertical = 32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
 
@@ -105,7 +95,7 @@ fun BakeryRegisterScreen(
                     Image(
                         painter = painterResource(id = R.drawable.cupcake), // Imagen del cupcake
                         contentDescription = "Icono Registro",
-                        modifier = Modifier.size(80.dp) // Más pequeño
+                        modifier = Modifier.size(80.dp)
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
@@ -191,13 +181,13 @@ fun BakeryRegisterScreen(
                     if (uiState.error != null) {
                         Text(
                             uiState.error!!,
-                            color = MaterialTheme.colorScheme.error, // Usará el color Rojo definido en el ColorScheme
+                            color = MaterialTheme.colorScheme.error,
                             style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(top = 4.dp).align(Alignment.Start) // Alinea a la izquierda
+                            modifier = Modifier.padding(top = 4.dp).align(Alignment.Start)
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(24.dp)) // Espacio antes de los botones
+                    Spacer(modifier = Modifier.height(24.dp))
 
                     // --- Botones ---
                     Row(
@@ -207,14 +197,14 @@ fun BakeryRegisterScreen(
                         // --- Botón Cancelar ---
                         Button(
                             onClick = { navController.popBackStack() },
-                            modifier = Modifier.weight(1f).height(48.dp), // Botones un poco más bajos
+                            modifier = Modifier.weight(1f).height(48.dp), // Botones un poco más abajo
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.secondary
                             )
                         ) {
                             Text(
                                 "Cancelar",
-                                fontSize = 16.sp, // Texto un poco más pequeño
+                                fontSize = 16.sp,
                                 color = MaterialTheme.colorScheme.onSecondary
                             )
                         }
@@ -230,8 +220,7 @@ fun BakeryRegisterScreen(
                             enabled = uiState.username.isNotBlank() &&
                                     uiState.password.isNotBlank() &&
                                     uiState.confirmPassword.isNotBlank() &&
-                                    //uiState.error == null && // Permitir registrar aunque haya otro error
-                                    uiState.password == uiState.confirmPassword && // Solo valida coincidencia aquí
+                                    uiState.password == uiState.confirmPassword &&
                                     !uiState.isLoading
                         ) {
                             Text(
@@ -240,8 +229,8 @@ fun BakeryRegisterScreen(
                                 color = MaterialTheme.colorScheme.onPrimary
                             )
                         }
-                    } // Fin Row Botones
-                } // Fin Column Contenedor Blanco
+                    } // Fin Row
+                } // Fin Column Contenedor
             } // Fin Column Principal
         } // Fin Surface
     } // Fin MaterialTheme
@@ -252,6 +241,5 @@ fun BakeryRegisterScreen(
 @Composable
 fun BakeryRegisterScreenPreview() {
     val navController = rememberNavController()
-    // La preview usará un ViewModel temporal, no interactuará con la BD real
     BakeryRegisterScreen(navController = navController)
 }

@@ -13,7 +13,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
     companion object {
-        // Volatile asegura que INSTANCE siempre tenga el valor más reciente
+        // Volatile asegura que INSTANCE  tenga el valor más reciente
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
@@ -23,12 +23,11 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "pasteleria_database" // Nombre del archivo de la BD
+                    "pasteleria_database"
                 )
-                    // .fallbackToDestructiveMigration() // Opcional: Borra y recrea si la versión cambia
                     .build()
                 INSTANCE = instance
-                // return instance
+                //Como un return
                 instance
             }
         }

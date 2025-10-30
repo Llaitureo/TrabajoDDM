@@ -39,7 +39,6 @@ fun AppNav(){
         }
 
         composable(
-            // La nueva ruta con 3 argumentos
             route = "PedidoScreen/{nombre}/{precio}/{imagenResId}",
             arguments = listOf(
                 navArgument("nombre") { type = NavType.StringType },
@@ -47,12 +46,10 @@ fun AppNav(){
                 navArgument("imagenResId") { type = NavType.IntType } // Nuevo argumento
             )
         ) { backStackEntry ->
-            // Leemos los argumentos
             val nombre = backStackEntry.arguments?.getString("nombre") ?: ""
             val precio = backStackEntry.arguments?.getString("precio") ?: ""
             val imagenResId = backStackEntry.arguments?.getInt("imagenResId") ?: 0
 
-            // Llamamos a la nueva pantalla
             PedidoScreen(
                 navController = navController,
                 nombre = nombre,

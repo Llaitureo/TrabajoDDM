@@ -1,31 +1,27 @@
 package com.pasteleria.ui.login
 
-import android.app.Application // Necesitamos Application
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.AndroidViewModel // Cambiamos a AndroidViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.pasteleria.data.database.AppDatabase // Importamos la BD
+import com.pasteleria.data.database.AppDatabase
 import com.pasteleria.data.model.Credential
-import com.pasteleria.data.repository.UserRepository // Importamos el repo de usuario
+import com.pasteleria.data.repository.UserRepository
 import kotlinx.coroutines.launch
 
-// El LoginUiState sigue igual
-// data class LoginUiState(...)
-
-class LoginViewModel(application: Application) : AndroidViewModel(application) { // Hereda de AndroidViewModel
+class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     // Repositorio para consultar usuarios de la BD
     private val userRepository: UserRepository
-    // Mantenemos la referencia al admin original
     private val adminCredential = Credential.admin
 
     var uiState by mutableStateOf(LoginUiState())
         private set
 
     init {
-        // Inicializamos el repositorio
+        // Inicialización del repositorio
         val userDao = AppDatabase.getDatabase(application).userDao()
         userRepository = UserRepository(userDao)
     }
@@ -45,20 +41,19 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
         viewModelScope.launch {
             try {
-                // 1. Comprueba si es el admin hardcodeado
+                    //Admin
                 if (currentUsername == adminCredential.username && currentPassword == adminCredential.password) {
                     uiState = uiState.copy(isLoading = false)
                     onSuccess(currentUsername)
                 } else {
-                    // 2. Si no es admin, busca en la base de datos
+                    //User de bdd
                     val userFromDb = userRepository.findUserByUsername(currentUsername)
 
                     if (userFromDb != null && userFromDb.passwordHash == currentPassword) {
-                        // ¡Usuario encontrado y contraseña correcta! (Recuerda usar hash en real)
                         uiState = uiState.copy(isLoading = false)
                         onSuccess(currentUsername)
                     } else {
-                        // Usuario no encontrado o contraseña incorrecta
+                        //Usuario no encontrado o contraseña incorrecta
                         uiState = uiState.copy(isLoading = false, error = "Credenciales inválidas.")
                     }
                 }
