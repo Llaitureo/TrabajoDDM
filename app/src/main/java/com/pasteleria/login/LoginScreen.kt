@@ -37,15 +37,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.pasteleria.R
-import com.pasteleria.ui.theme.BlancoSuave
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.pasteleria.R
 import com.pasteleria.ui.login.LoginViewModel
+import com.pasteleria.ui.theme.BlancoSuave
 
 @Composable
 fun BakeryLoginScreen(
@@ -57,7 +55,6 @@ fun BakeryLoginScreen(
     val lightPinkBackground = Color(0xFFFCE4EC)
     val hintTextColor = Color(0xFF8D6E63)
 
-
     val BakeryColorScheme = lightColorScheme(
         primary = primaryBrown,
         onPrimary = Color.White,
@@ -65,7 +62,8 @@ fun BakeryLoginScreen(
         onBackground = primaryBrown,
         surface = Color.White,
         onSurface = primaryBrown,
-        outline = hintTextColor
+        outline = hintTextColor,
+        error = Color.Red
     )
 
     MaterialTheme(
@@ -85,8 +83,7 @@ fun BakeryLoginScreen(
                     .background(
                         color = BlancoSuave,
                         shape = RoundedCornerShape(16.dp)
-                    )
-                ,
+                    ),
                 // Más padding horizontal
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -112,21 +109,15 @@ fun BakeryLoginScreen(
                 OutlinedTextField(
                     value = vm.uiState.username,
                     onValueChange = vm::onUsernameChange,
-                    label = {
-                        Text(
-                            "Usuario",
-                            color = MaterialTheme.colorScheme.outline
-                        )
-                    },
+                    label = { Text("Usuario") },
                     singleLine = true,
+                    isError = vm.uiState.usernameError != null,
+                    supportingText = { vm.uiState.usernameError?.let { Text(it) } },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = MaterialTheme.colorScheme.primary,
                         unfocusedBorderColor = hintTextColor,
-                        focusedLabelColor = MaterialTheme.colorScheme.primary,
-                        cursorColor = MaterialTheme.colorScheme.primary,
-                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface
+                        errorBorderColor = MaterialTheme.colorScheme.error
                     )
                 )
 
@@ -136,41 +127,30 @@ fun BakeryLoginScreen(
                 OutlinedTextField(
                     value = vm.uiState.password,
                     onValueChange = vm::onPasswordChange,
-                    label = {
-                        Text(
-                            "Contraseña",
-                            color = MaterialTheme.colorScheme.outline
-                        )
-                    },
+                    label = { Text("Contraseña") },
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    visualTransformation = if (showPassword) {
-                        VisualTransformation.None
-                    } else {
-                        PasswordVisualTransformation()
-                    },
+                    isError = vm.uiState.passwordError != null,
+                    supportingText = { vm.uiState.passwordError?.let { Text(it) } },
+                    visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                     trailingIcon = {
                         IconButton(onClick = { showPassword = !showPassword }) {
                             Icon(
                                 imageVector = if (showPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                                contentDescription = "Toggle password visibility",
-                                tint = MaterialTheme.colorScheme.onSurface
+                                contentDescription = "Toggle password visibility"
                             )
                         }
                     },
+                    modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = MaterialTheme.colorScheme.primary,
                         unfocusedBorderColor = hintTextColor,
-                        focusedLabelColor = MaterialTheme.colorScheme.primary,
-                        cursorColor = MaterialTheme.colorScheme.primary,
-                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface
+                        errorBorderColor = MaterialTheme.colorScheme.error
                     )
                 )
 
-                vm.uiState.error?.let { error ->
+                vm.uiState.error?.let {
                     Text(
-                        text = error,
+                        text = it,
                         color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.padding(top = 8.dp)
                     )
@@ -182,8 +162,8 @@ fun BakeryLoginScreen(
                 Button(
                     onClick = {
                         vm.submit { username ->
-                            navController.navigate("home/$username"){
-                                popUpTo("login"){ inclusive = true }
+                            navController.navigate("home/$username") {
+                                popUpTo("login") { inclusive = true }
                                 launchSingleTop = true
                             }
                         }
@@ -201,8 +181,8 @@ fun BakeryLoginScreen(
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
-
                 }
+
                 Spacer(modifier = Modifier.height(16.dp))
 
                 TextButton(onClick = { navController.navigate("register") }) {

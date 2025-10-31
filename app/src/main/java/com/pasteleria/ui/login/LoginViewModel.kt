@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
-    // Repositorio para consultar usuarios de la BD
     private val userRepository: UserRepository
     private val adminCredential = Credential.admin
 
@@ -21,39 +20,42 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         private set
 
     init {
-        // Inicialización del repositorio
         val userDao = AppDatabase.getDatabase(application).userDao()
         userRepository = UserRepository(userDao)
     }
 
     fun onUsernameChange(value: String) {
-        uiState = uiState.copy(username = value.trim(), error = null)
+        uiState = uiState.copy(username = value.trim(), error = null, usernameError = null)
     }
 
     fun onPasswordChange(value: String) {
-        uiState = uiState.copy(password = value, error = null)
+        uiState = uiState.copy(password = value, error = null, passwordError = null)
     }
 
     fun submit(onSuccess: (String) -> Unit) {
-        uiState = uiState.copy(isLoading = true, error = null)
+        if (uiState.username.isBlank() || uiState.password.isBlank()) {
+            val usernameError = if (uiState.username.isBlank()) "Rellene este campo" else null
+            val passwordError = if (uiState.password.isBlank()) "Rellene este campo" else null
+            uiState = uiState.copy(usernameError = usernameError, passwordError = passwordError)
+            return
+        }
+
+        uiState = uiState.copy(isLoading = true, error = null, usernameError = null, passwordError = null)
         val currentUsername = uiState.username
         val currentPassword = uiState.password
 
         viewModelScope.launch {
             try {
-                    //Admin
                 if (currentUsername == adminCredential.username && currentPassword == adminCredential.password) {
                     uiState = uiState.copy(isLoading = false)
                     onSuccess(currentUsername)
                 } else {
-                    //User de bdd
                     val userFromDb = userRepository.findUserByUsername(currentUsername)
 
                     if (userFromDb != null && userFromDb.passwordHash == currentPassword) {
                         uiState = uiState.copy(isLoading = false)
                         onSuccess(currentUsername)
                     } else {
-                        //Usuario no encontrado o contraseña incorrecta
                         uiState = uiState.copy(isLoading = false, error = "Credenciales inválidas.")
                     }
                 }
