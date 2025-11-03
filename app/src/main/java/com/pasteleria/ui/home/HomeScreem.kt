@@ -70,7 +70,8 @@ val primaryBrown = Color( 0xFF6D4C41)
 @Composable
 fun HomeScreem(
     username: String,
-    navController: NavController
+    navController: NavController,
+    boletaViewModel: com.pasteleria.ui.boleta.BoletaViewModel? = null
 ) {
     HuertohogarTheme {
         Scaffold(
@@ -128,6 +129,7 @@ fun HomeScreem(
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
                         onClick = {
+                            boletaViewModel?.limpiarBoletas()
                             navController.navigate("login") {
                                 popUpTo("login") { inclusive = true }
                                 launchSingleTop = true
