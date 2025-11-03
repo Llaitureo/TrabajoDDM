@@ -44,6 +44,7 @@ import com.pasteleria.ui.theme.HuertohogarTheme
 import com.pasteleria.ui.theme.Marron
 import com.pasteleria.ui.theme.rosado
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.ReceiptLong // Ícono de boleta
 import androidx.compose.material3.Icon
@@ -83,6 +84,15 @@ fun HomeScreem(
                         titleContentColor = Marron
                     ),
                     actions = {
+                        IconButton(onClick = {
+                            navController.navigate("profile/$username")
+                        }){
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = "Mi perfil",
+                                tint = Marron
+                            )
+                        }
                         IconButton(onClick = {
                             navController.navigate("boleta")
                         }){

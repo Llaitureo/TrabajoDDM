@@ -32,12 +32,12 @@ class BoletaViewModel : ViewModel() {
         _pedidos.update { pedidos ->
             pedidos + nuevoItem
         }
-
+        
         // Simular descuentos automáticamente (esto se haría normalmente con datos del usuario logueado)
         // Para demostración: usuario mayor de 50 años
         simulateUserDiscount()
     }
-
+    
     private fun simulateUserDiscount() {
         // Simulación: alternamos entre diferentes tipos de descuentos para mostrar la funcionalidad
         val orderCount = _pedidos.value.size
@@ -53,13 +53,13 @@ class BoletaViewModel : ViewModel() {
         if (_hasPromotionCode.value == true) {
             return 0.10
         }
-
+        
         // Descuento del 50% para mayores de 50 años
         val age = _userAge.value
         if (age != null && age >= 50) {
             return 0.50
         }
-
+        
         return 0.0
     }
 
@@ -68,7 +68,7 @@ class BoletaViewModel : ViewModel() {
         val discount = calculateDiscount()
         return subtotal * (1 - discount)
     }
-
+    
     fun getDiscountAmount(): Double {
         val subtotal = _pedidos.value.sumOf { it.producto.precio * it.cantidad }
         val discount = calculateDiscount()

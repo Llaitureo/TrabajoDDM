@@ -13,12 +13,15 @@ import com.pasteleria.ui.boleta.BoletaViewModel
 import com.pasteleria.ui.register.BakeryRegisterScreen
 import com.pasteleria.ui.home.HomeScreem
 import com.pasteleria.ui.pedido.PedidoScreen
+import com.pasteleria.ui.perfil.ProfileScreen
+import com.pasteleria.ui.perfil.ProfileViewModel
 
 
 @Composable
 fun AppNav(){
     val navController = rememberNavController()
     val boletaViewModel: BoletaViewModel = viewModel()//Importante poner :(
+    val profileViewModel: ProfileViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = "login"){
         composable(route= "login"){
@@ -37,7 +40,7 @@ fun AppNav(){
                 }
             )
         ){
-                backStackEntry ->
+            backStackEntry ->
             val username = backStackEntry.arguments?.getString("username").orEmpty()
             HomeScreem(username = username, navController = navController, boletaViewModel = boletaViewModel)
         }
@@ -45,7 +48,7 @@ fun AppNav(){
         composable(
             route="pedidosScreen/{nombre}/{precio}/{imagenResId}",
         ){
-                backStackEntry ->
+            backStackEntry ->
             val nombre = backStackEntry.arguments?.getString("nombre") ?:""
             val precio = backStackEntry.arguments?.getInt("precio") ?: 0
             val imagenResId = backStackEntry.arguments?.getInt("imagenResId") ?: 0
@@ -63,6 +66,20 @@ fun AppNav(){
             BoletaScreen(
                 navController = navController,
                 boletaViewModel = boletaViewModel
+            )
+        }
+
+        composable(
+            route = "profile/{username}",
+            arguments = listOf(
+                navArgument("username") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val username = backStackEntry.arguments?.getString("username") ?: ""
+            ProfileScreen(
+                navController = navController,
+                profileViewModel = profileViewModel,
+                username = username
             )
         }
 

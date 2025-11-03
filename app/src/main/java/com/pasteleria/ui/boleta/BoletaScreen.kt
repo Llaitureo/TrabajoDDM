@@ -73,7 +73,7 @@ fun BoletaScreen(
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-
+                
                 // Información de precios y descuentos
                 Column(
                     modifier = Modifier.fillMaxWidth()
@@ -91,7 +91,7 @@ fun BoletaScreen(
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
-
+                    
                     if (discountPercentage > 0) {
                         Spacer(modifier = Modifier.height(4.dp))
                         Row(
@@ -110,11 +110,11 @@ fun BoletaScreen(
                             )
                         }
                     }
-
+                    
                     Spacer(modifier = Modifier.height(8.dp))
                     Divider()
                     Spacer(modifier = Modifier.height(8.dp))
-
+                    
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
