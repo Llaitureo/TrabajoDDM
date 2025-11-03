@@ -6,16 +6,15 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.pasteleria.data.dao.UserDao
 import com.pasteleria.data.model.User
-// 1. Importa el modelo y el DAO de Producto
 import com.pasteleria.data.dao.ProductoDao
 import com.pasteleria.data.model.Producto
 
-// 2. Añade Producto::class a 'entities' y sube la versión de 1 a 2
-@Database(entities = [User::class, Producto::class], version = 2, exportSchema = false)
+// El error ocurre porque el modelo User cambió, pero la versión de la BD no.
+// Subiendo la versión de 2 a 3 para que Room actualice el esquema.
+@Database(entities = [User::class, Producto::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
-    // 3. Añade el nuevo DAO
     abstract fun productoDao(): ProductoDao
 
     companion object {
@@ -29,10 +28,8 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "pasteleria_database"
                 )
-                    // 4. AÑADE ESTO: Como cambiaste la versión,
-                    // necesitas decirle a Room cómo migrar.
-                    // Esta es la forma más fácil: borra y recrea la BD.
-                    // (Pierdes los datos de usuarios si ya tenías)
+                    // La migración destructiva borrará los datos y recreará la BD
+                    // con el nuevo esquema de User.
                     .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance

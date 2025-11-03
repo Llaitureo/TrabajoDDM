@@ -23,13 +23,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.pasteleria.R
 import com.pasteleria.ui.theme.BlancoSuave
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BakeryRegisterScreen(
     navController: NavController,
     vm: RegisterViewModel = viewModel()
 ) {
-    val uiState = vm.uiState // Obtiene el estado del ViewModel
+    val uiState = vm.uiState
 
     val primaryBrown = Color(0xFF6D4C41)
     val lightPinkBackground = Color(0xFFFCE4EC)
@@ -50,17 +51,15 @@ fun BakeryRegisterScreen(
 
     LaunchedEffect(uiState.registrationSuccess) {
         if (uiState.registrationSuccess) {
-            // Navega al login
             navController.navigate("login") {
                 popUpTo("login") { inclusive = true }
                 launchSingleTop = true
             }
-            vm.registrationHandled() // Resetea el estado en el ViewModel
+            vm.registrationHandled()
         }
     }
 
     MaterialTheme(colorScheme = BakeryColorScheme) {
-        // --- Estado local para mostrar/ocultar contraseñas ---
         var showPassword by remember { mutableStateOf(false) }
         var showConfirmPassword by remember { mutableStateOf(false) }
 
@@ -83,7 +82,7 @@ fun BakeryRegisterScreen(
                         )
                         .padding(horizontal = 24.dp, vertical = 32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
-                ){
+                ) {
 
                     Text(
                         text = "Crea tu Cuenta",
@@ -93,33 +92,23 @@ fun BakeryRegisterScreen(
                     Spacer(modifier = Modifier.height(24.dp))
 
                     Image(
-                        painter = painterResource(id = R.drawable.cupcake), // Imagen del cupcake
+                        painter = painterResource(id = R.drawable.cupcake),
                         contentDescription = "Icono Registro",
                         modifier = Modifier.size(80.dp)
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // --- Campo Usuario ---
                     OutlinedTextField(
                         value = uiState.username,
                         onValueChange = vm::onUsernameChange,
                         label = { Text("Nuevo Usuario", color = MaterialTheme.colorScheme.outline) },
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = hintTextColor,
-                            focusedLabelColor = MaterialTheme.colorScheme.primary,
-                            cursorColor = MaterialTheme.colorScheme.primary,
-                            focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                            unfocusedTextColor = MaterialTheme.colorScheme.onSurface
-                        )
+                        modifier = Modifier.fillMaxWidth()
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // --- Campo Contraseña ---
                     OutlinedTextField(
                         value = uiState.password,
                         onValueChange = vm::onPasswordChange,
@@ -131,25 +120,15 @@ fun BakeryRegisterScreen(
                             IconButton(onClick = { showPassword = !showPassword }) {
                                 Icon(
                                     imageVector = if (showPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                                    contentDescription = "Mostrar/Ocultar contraseña",
-                                    tint = MaterialTheme.colorScheme.onSurface
+                                    contentDescription = "Mostrar/Ocultar contraseña"
                                 )
                             }
                         },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = hintTextColor,
-                            focusedLabelColor = MaterialTheme.colorScheme.primary,
-                            cursorColor = MaterialTheme.colorScheme.primary,
-                            focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                            unfocusedTextColor = MaterialTheme.colorScheme.onSurface
-                        ),
                         isError = uiState.error == "Las contraseñas no coinciden"
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // --- Campo Confirmar Contraseña ---
                     OutlinedTextField(
                         value = uiState.confirmPassword,
                         onValueChange = vm::onConfirmPasswordChange,
@@ -161,23 +140,35 @@ fun BakeryRegisterScreen(
                             IconButton(onClick = { showConfirmPassword = !showConfirmPassword }) {
                                 Icon(
                                     imageVector = if (showConfirmPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                                    contentDescription = "Mostrar/Ocultar confirmación",
-                                    tint = MaterialTheme.colorScheme.onSurface
+                                    contentDescription = "Mostrar/Ocultar confirmación"
                                 )
                             }
                         },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = hintTextColor,
-                            focusedLabelColor = MaterialTheme.colorScheme.primary,
-                            cursorColor = MaterialTheme.colorScheme.primary,
-                            focusedTextColor = MaterialTheme.colorScheme.onSurface,
-                            unfocusedTextColor = MaterialTheme.colorScheme.onSurface
-                        ),
                         isError = uiState.error == "Las contraseñas no coinciden"
                     )
 
-                    // Mensaje de error
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Campo Fecha de Nacimiento
+                    OutlinedTextField(
+                        value = uiState.birthDate,
+                        onValueChange = vm::onBirthDateChange,
+                        label = { Text("Fecha de Nacimiento (DD/MM/AAAA)", color = MaterialTheme.colorScheme.outline) },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Campo Código de Descuento
+                    OutlinedTextField(
+                        value = uiState.discountCode,
+                        onValueChange = vm::onDiscountCodeChange,
+                        label = { Text("Código de Descuento (opcional)", color = MaterialTheme.colorScheme.outline) },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
                     if (uiState.error != null) {
                         Text(
                             uiState.error!!,
@@ -189,34 +180,22 @@ fun BakeryRegisterScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // --- Botones ---
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp) // Espacio entre botones
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        // --- Botón Cancelar ---
                         Button(
                             onClick = { navController.popBackStack() },
-                            modifier = Modifier.weight(1f).height(48.dp), // Botones un poco más abajo
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.secondary
-                            )
+                            modifier = Modifier.weight(1f).height(48.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                         ) {
-                            Text(
-                                "Cancelar",
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onSecondary
-                            )
+                            Text("Cancelar", fontSize = 16.sp, color = MaterialTheme.colorScheme.onSecondary)
                         }
 
-                        // --- Botón Registrar ---
                         Button(
                             onClick = { vm.registerUser() },
                             modifier = Modifier.weight(1f).height(48.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primary
-                            ),
-                            //
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                             enabled = uiState.username.isNotBlank() &&
                                     uiState.password.isNotBlank() &&
                                     uiState.confirmPassword.isNotBlank() &&
@@ -229,14 +208,13 @@ fun BakeryRegisterScreen(
                                 color = MaterialTheme.colorScheme.onPrimary
                             )
                         }
-                    } // Fin Row
-                } // Fin Column Contenedor
-            } // Fin Column Principal
-        } // Fin Surface
-    } // Fin MaterialTheme
+                    }
+                }
+            }
+        }
+    }
 }
 
-// --- PREVIEW ---
 @Preview(showBackground = true)
 @Composable
 fun BakeryRegisterScreenPreview() {
