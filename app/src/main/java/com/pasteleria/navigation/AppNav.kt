@@ -37,15 +37,15 @@ fun AppNav(){
                 }
             )
         ){
-            backStackEntry ->
+                backStackEntry ->
             val username = backStackEntry.arguments?.getString("username").orEmpty()
-            HomeScreem(username = username, navController = navController)
+            HomeScreem(username = username, navController = navController, boletaViewModel = boletaViewModel)
         }
 
         composable(
             route="pedidosScreen/{nombre}/{precio}/{imagenResId}",
         ){
-            backStackEntry ->
+                backStackEntry ->
             val nombre = backStackEntry.arguments?.getString("nombre") ?:""
             val precio = backStackEntry.arguments?.getInt("precio") ?: 0
             val imagenResId = backStackEntry.arguments?.getInt("imagenResId") ?: 0
