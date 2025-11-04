@@ -1,22 +1,32 @@
 package com.pasteleria.ui.perfil
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.pasteleria.data.database.AppDatabase
 import com.pasteleria.data.model.User
+import com.pasteleria.data.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel(application: Application) : AndroidViewModel(application) {
 
+    private val userRepository: UserRepository
     private val _user = MutableStateFlow<User?>(null)
     val user: StateFlow<User?> = _user.asStateFlow()
 
+    init {
+        val userDao = AppDatabase.getDatabase(application).userDao()
+        userRepository = UserRepository(userDao)
+    }
+
     fun loadUser(username: String) {
         viewModelScope.launch {
-            val user = when (username.lowercase()) {
-                "admin" -> User(
+            val user = if (username.lowercase() == "admin") {
+                // Usuario admin hardcodeado
+                User(
                     id = 1,
                     username = username,
                     passwordHash = "",
@@ -26,16 +36,9 @@ class ProfileViewModel : ViewModel() {
                     hasTenPercentDiscount = false,
                     hasFreeCakeOnBirthday = true
                 )
-                else -> User(
-                    id = 1,
-                    username = username,
-                    passwordHash = "",
-                    birthDate = "22/08/1995",
-                    discountCode = "FELICES50",
-                    hasFiftyPercentDiscount = false,
-                    hasTenPercentDiscount = true,
-                    hasFreeCakeOnBirthday = false
-                )
+            } else {
+                // Buscar usuario real en la base de datos
+                userRepository.findUserByUsername(username)
             }
             _user.value = user
         }

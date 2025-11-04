@@ -45,6 +45,7 @@ import com.pasteleria.ui.theme.Marron
 import com.pasteleria.ui.theme.rosado
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.ReceiptLong // Ícono de boleta
 import androidx.compose.material3.Icon
@@ -84,6 +85,15 @@ fun HomeScreem(
                         titleContentColor = Marron
                     ),
                     actions = {
+                        IconButton(onClick = {
+                            navController.navigate("qr_scanner/$username")
+                        }){
+                            Icon(
+                                imageVector = Icons.Default.QrCode,
+                                contentDescription = "Escaner QR",
+                                tint = Marron
+                            )
+                        }
                         IconButton(onClick = {
                             navController.navigate("profile/$username")
                         }){
