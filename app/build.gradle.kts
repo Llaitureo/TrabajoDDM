@@ -72,4 +72,19 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")          // Misma versión
     implementation("androidx.room:room-ktx:2.6.1")     // Misma versión
 
+    // Dependencias para QR Scanner
+    // CameraX
+    implementation("androidx.camera:camera-core:1.3.1")
+    implementation("androidx.camera:camera-camera2:1.3.1")
+    implementation("androidx.camera:camera-lifecycle:1.3.1")
+    implementation("androidx.camera:camera-view:1.3.1")
+
+    // ML Kit Barcode Scanning
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+
+    // ViewModel Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+
+    // Para el observeAsState con LiveData
+    implementation("androidx.compose.runtime:runtime-livedata")
 }

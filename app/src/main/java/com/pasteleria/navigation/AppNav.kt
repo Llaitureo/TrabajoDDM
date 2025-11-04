@@ -15,6 +15,8 @@ import com.pasteleria.ui.home.HomeScreem
 import com.pasteleria.ui.pedido.PedidoScreen
 import com.pasteleria.ui.perfil.ProfileScreen
 import com.pasteleria.ui.perfil.ProfileViewModel
+import com.pasteleria.ui.qr.QrScannerScreen
+import com.pasteleria.ui.qr.QrViewModel
 
 
 @Composable
@@ -22,6 +24,7 @@ fun AppNav(){
     val navController = rememberNavController()
     val boletaViewModel: BoletaViewModel = viewModel()//Importante poner :(
     val profileViewModel: ProfileViewModel = viewModel()
+    val qrViewModel: QrViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = "login"){
         composable(route= "login"){
@@ -101,6 +104,23 @@ fun AppNav(){
                 precio = precio,
                 imagenResId = imagenResId,
                 boletaViewModel = boletaViewModel//Esto añade a la lista creada.
+            )
+        }
+
+        composable(
+            route = "qr_scanner/{username}",
+            arguments = listOf(
+                navArgument("username") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val username = backStackEntry.arguments?.getString("username") ?: ""
+            QrScannerScreen(
+                viewModel = qrViewModel,
+                onNavigateBack = {
+                    navController.navigate("home/$username") {
+                        popUpTo("home/$username") { inclusive = false }
+                    }
+                }
             )
         }
     }
