@@ -13,12 +13,18 @@ import com.pasteleria.ui.boleta.BoletaViewModel
 import com.pasteleria.ui.register.BakeryRegisterScreen
 import com.pasteleria.ui.home.HomeScreem
 import com.pasteleria.ui.pedido.PedidoScreen
+import com.pasteleria.ui.perfil.ProfileScreen
+import com.pasteleria.ui.perfil.ProfileViewModel
+import com.pasteleria.ui.qr.QrScannerScreen
+import com.pasteleria.ui.qr.QrViewModel
 
 
 @Composable
 fun AppNav(){
     val navController = rememberNavController()
     val boletaViewModel: BoletaViewModel = viewModel()//Importante poner :(
+    val profileViewModel: ProfileViewModel = viewModel()
+    val qrViewModel: QrViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = "login"){
         composable(route= "login"){
@@ -39,7 +45,7 @@ fun AppNav(){
         ){
             backStackEntry ->
             val username = backStackEntry.arguments?.getString("username").orEmpty()
-            HomeScreem(username = username, navController = navController)
+            HomeScreem(username = username, navController = navController, boletaViewModel = boletaViewModel)
         }
 
         composable(
@@ -67,6 +73,20 @@ fun AppNav(){
         }
 
         composable(
+            route = "profile/{username}",
+            arguments = listOf(
+                navArgument("username") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val username = backStackEntry.arguments?.getString("username") ?: ""
+            ProfileScreen(
+                navController = navController,
+                profileViewModel = profileViewModel,
+                username = username
+            )
+        }
+
+        composable(
             route = "PedidoScreen/{nombre}/{precio}/{imagenResId}",
             arguments = listOf(
                 navArgument("nombre") { type = NavType.StringType },
@@ -84,6 +104,23 @@ fun AppNav(){
                 precio = precio,
                 imagenResId = imagenResId,
                 boletaViewModel = boletaViewModel//Esto añade a la lista creada.
+            )
+        }
+
+        composable(
+            route = "qr_scanner/{username}",
+            arguments = listOf(
+                navArgument("username") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val username = backStackEntry.arguments?.getString("username") ?: ""
+            QrScannerScreen(
+                viewModel = qrViewModel,
+                onNavigateBack = {
+                    navController.navigate("home/$username") {
+                        popUpTo("home/$username") { inclusive = false }
+                    }
+                }
             )
         }
     }

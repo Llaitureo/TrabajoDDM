@@ -1,4 +1,4 @@
-package com.pasteleria
+package com.example.camara
 
 import android.Manifest
 import android.os.Bundle
@@ -6,11 +6,17 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.runtime.*
-import com.pasteleria.navigation.AppNav
-import com.pasteleria.utils.CameraPermissionHelper
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import com.example.camara.ui.view.QrScannerScreen
+import com.example.camara.ui.viewmodel.QrViewModel
+import com.example.camara.utils.CameraPermissionHelper
 
 class MainActivity : ComponentActivity() {
+
+    private val qrViewModel: QrViewModel by viewModels()
 
     // Estado para controlar si tenemos permiso
     private var hasCameraPermission by mutableStateOf(false)
@@ -33,8 +39,26 @@ class MainActivity : ComponentActivity() {
         // Verificar permiso inicial
         hasCameraPermission = CameraPermissionHelper.hasCameraPermission(this)
 
-        setContent{
-            AppNav()
+        setContent {
+            // Use MaterialTheme directly as a quick fix
+            MaterialTheme {
+                Surface {
+                    QrScannerScreen(
+                        viewModel = qrViewModel,
+                        hasCameraPermission = hasCameraPermission,
+                        onRequestPermission = {
+                            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+                        }
+                    )
+                }
+            }
+        }
+
+        // Observa los resultados del QR
+        qrViewModel.qrResult.observe(this) { qrResult ->
+            qrResult?.let { result ->
+                Toast.makeText(this, "Código QR Detectado: ${result.content}", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -42,9 +66,5 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         // Actualizar estado del permiso cuando la app se reanuda
         hasCameraPermission = CameraPermissionHelper.hasCameraPermission(this)
-    }
-
-    fun requestCameraPermission() {
-        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
     }
 }

@@ -44,6 +44,8 @@ import com.pasteleria.ui.theme.HuertohogarTheme
 import com.pasteleria.ui.theme.Marron
 import com.pasteleria.ui.theme.rosado
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.ReceiptLong // Ícono de boleta
 import androidx.compose.material3.Icon
@@ -70,7 +72,8 @@ val primaryBrown = Color( 0xFF6D4C41)
 @Composable
 fun HomeScreem(
     username: String,
-    navController: NavController
+    navController: NavController,
+    boletaViewModel: com.pasteleria.ui.boleta.BoletaViewModel? = null
 ) {
     HuertohogarTheme {
         Scaffold(
@@ -82,6 +85,24 @@ fun HomeScreem(
                         titleContentColor = Marron
                     ),
                     actions = {
+                        IconButton(onClick = {
+                            navController.navigate("qr_scanner/$username")
+                        }){
+                            Icon(
+                                imageVector = Icons.Default.QrCode,
+                                contentDescription = "Escaner QR",
+                                tint = Marron
+                            )
+                        }
+                        IconButton(onClick = {
+                            navController.navigate("profile/$username")
+                        }){
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = "Mi perfil",
+                                tint = Marron
+                            )
+                        }
                         IconButton(onClick = {
                             navController.navigate("boleta")
                         }){
@@ -128,6 +149,7 @@ fun HomeScreem(
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
                         onClick = {
+                            boletaViewModel?.limpiarBoletas()
                             navController.navigate("login") {
                                 popUpTo("login") { inclusive = true }
                                 launchSingleTop = true

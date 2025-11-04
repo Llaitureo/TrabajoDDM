@@ -29,7 +29,10 @@ fun BoletaScreen(
 
     val itemsDelPedido by boletaViewModel.pedidos.collectAsState()
 
-    val total = itemsDelPedido.sumOf { it.producto.precio * it.cantidad }
+    val subtotal = itemsDelPedido.sumOf { it.producto.precio * it.cantidad }
+    val discountPercentage = boletaViewModel.calculateDiscount()
+    val discountAmount = boletaViewModel.getDiscountAmount()
+    val total = boletaViewModel.getTotalWithDiscount()
 
     HuertohogarTheme {
         Scaffold(
@@ -70,12 +73,65 @@ fun BoletaScreen(
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "Total: $$total",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.End)
-                )
+                
+                // Información de precios y descuentos
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Subtotal:",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        Text(
+                            text = "$$subtotal",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                    
+                    if (discountPercentage > 0) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = if (discountPercentage == 0.50) "Descuento 50% (Mayor de 50 años):" else "Descuento 10% (FELICES50):",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Text(
+                                text = "-$${"%.0f".format(discountAmount)}",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                    
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Divider()
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Total:",
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "$${"%.0f".format(total)}",
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
             }
         }
     }
