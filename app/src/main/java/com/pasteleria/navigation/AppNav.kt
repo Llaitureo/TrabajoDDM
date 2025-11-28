@@ -123,5 +123,9 @@ fun AppNav(){
                 }
             )
         }
+
+        composable(route = "map") {
+            com.pasteleria.ui.map.MapScreen(navController = navController)
+        }
     }
 }

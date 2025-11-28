@@ -18,6 +18,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Mapbox token
+        resValue("string", "mapbox_access_token", "pk.eyJ1IjoicGFwaXRvYmFsIiwiYSI6ImNtaWpmbHlscDExYjAzZXBsdGttZGNnNjcifQ.x2CS0Gcyp5hiZCfqBeBBXQ")
     }
 
     buildTypes {
@@ -87,4 +90,7 @@ dependencies {
 
     // Para el observeAsState con LiveData
     implementation("androidx.compose.runtime:runtime-livedata")
+
+    // Mapbox SDK
+    implementation("com.mapbox.maps:android:11.0.0")
 }

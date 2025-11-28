@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Huertohogar</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoicGFwaXRvYmFsIiwiYSI6ImNtaWpmbHlscDExYjAzZXBsdGttZGNnNjcifQ.x2CS0Gcyp5hiZCfqBeBBXQ</string>
 </resources>

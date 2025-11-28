@@ -48,6 +48,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.ReceiptLong // Ícono de boleta
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 
@@ -84,6 +85,17 @@ fun HomeScreem(
                         containerColor = rosado,
                         titleContentColor = Marron
                     ),
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            navController.navigate("map")
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Map,
+                                contentDescription = "Ver Mapa",
+                                tint = Marron
+                            )
+                        }
+                    },
                     actions = {
                         IconButton(onClick = {
                             navController.navigate("qr_scanner/$username")
