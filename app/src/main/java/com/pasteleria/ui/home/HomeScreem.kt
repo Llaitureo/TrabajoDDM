@@ -46,27 +46,21 @@ import com.pasteleria.ui.theme.rosado
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.QrCode
-import androidx.compose.material.icons.filled.Receipt
-import androidx.compose.material.icons.filled.ReceiptLong // Ícono de boleta
+import androidx.compose.material.icons.filled.ReceiptLong
 import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import com.pasteleria.data.model.Producto
 
-data class Producto(
-    val nombre: String,
-    val precio: Int,
-    val imagenResId: Int //
-)
-//ejemplo propio
 val listaDeProductos = listOf(
-    Producto("Torta de Chocolate", 14000, R.drawable.tortachocolate),
-    Producto("Cupcakes (6 un.)", 2000, R.drawable.cupcake2),
-    Producto("Donas (12 un.)", 2000, R.drawable.donut),
-    Producto("Pie de Limón", 16000, R.drawable.pastry),
-    Producto("Galletas Surtidas", 1500, R.drawable.cookie)
+    Producto(nombre = "Torta de Chocolate", precio = 14000, imagenResId = R.drawable.tortachocolate),
+    Producto(nombre = "Cupcakes (6 un.)", precio = 2000, imagenResId = R.drawable.cupcake2),
+    Producto(nombre = "Donas (12 un.)", precio = 2000, imagenResId = R.drawable.donut),
+    Producto(nombre = "Pie de Limón", precio = 16000, imagenResId = R.drawable.pastry),
+    Producto(nombre = "Galletas Surtidas", precio = 1500, imagenResId = R.drawable.cookie)
 )
 
-//Para remplazar al schema por el momento
 val primaryBrown = Color( 0xFF6D4C41)
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -121,6 +115,13 @@ fun HomeScreem(
                             Icon(
                                 imageVector = Icons.Default.ReceiptLong,
                                 contentDescription = "vae boleta",
+                                tint = Marron
+                            )
+                        }
+                        IconButton(onClick = { navController.navigate("historial/$username") }) {
+                            Icon(
+                                imageVector = Icons.Default.Receipt,
+                                contentDescription = "Mis Compras",
                                 tint = Marron
                             )
                         }
@@ -192,7 +193,7 @@ fun ProductoCard(
             .clickable(onClick = onProductoClick),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface //Color de fondo
+            containerColor = MaterialTheme.colorScheme.surface
         )
     ) {
         Row(

@@ -1,10 +1,7 @@
 package com.pasteleria.ui.boleta
-
-import com.pasteleria.ui.home.Producto
-
-
+import com.pasteleria.data.model.Producto
 
 data class PedidoItem(
-    final public val producto: Producto,
-    final public val cantidad: Int
+    val producto: Producto,
+    val cantidad: Int
 )

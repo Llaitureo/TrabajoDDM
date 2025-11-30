@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.pasteleria.ui.boleta.BoletaViewModel
-import com.pasteleria.ui.home.Producto
+import com.pasteleria.data.model.Producto
 import com.pasteleria.ui.theme.HuertohogarTheme
 import java.net.URLDecoder
 

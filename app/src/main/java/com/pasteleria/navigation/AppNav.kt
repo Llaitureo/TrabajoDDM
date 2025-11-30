@@ -1,6 +1,7 @@
 package com.pasteleria.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -10,6 +11,7 @@ import androidx.navigation.navArgument
 import com.pasteleria.login.BakeryLoginScreen
 import com.pasteleria.ui.boleta.BoletaScreen
 import com.pasteleria.ui.boleta.BoletaViewModel
+import com.pasteleria.ui.historial.HistorialScreen
 import com.pasteleria.ui.register.BakeryRegisterScreen
 import com.pasteleria.ui.home.HomeScreem
 import com.pasteleria.ui.pedido.PedidoScreen
@@ -22,7 +24,8 @@ import com.pasteleria.ui.qr.QrViewModel
 @Composable
 fun AppNav(){
     val navController = rememberNavController()
-    val boletaViewModel: BoletaViewModel = viewModel()//Importante poner :(
+
+    val boletaViewModel: BoletaViewModel = viewModel()
     val profileViewModel: ProfileViewModel = viewModel()
     val qrViewModel: QrViewModel = viewModel()
 
@@ -46,6 +49,16 @@ fun AppNav(){
             backStackEntry ->
             val username = backStackEntry.arguments?.getString("username").orEmpty()
             HomeScreem(username = username, navController = navController, boletaViewModel = boletaViewModel)
+
+            LaunchedEffect(username) {
+                boletaViewModel.setUsuarioActual(username)
+            }
+
+            HomeScreem(
+                username = username,
+                navController = navController,
+                boletaViewModel = boletaViewModel
+            )
         }
 
         composable(
@@ -103,7 +116,7 @@ fun AppNav(){
                 nombre = nombre,
                 precio = precio,
                 imagenResId = imagenResId,
-                boletaViewModel = boletaViewModel//Esto añade a la lista creada.
+                boletaViewModel = boletaViewModel
             )
         }
 
@@ -126,6 +139,14 @@ fun AppNav(){
 
         composable(route = "map") {
             com.pasteleria.ui.map.MapScreen(navController = navController)
+        }
+
+        composable(
+            route = "historial/{username}",
+            arguments = listOf(navArgument("username") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val username = backStackEntry.arguments?.getString("username") ?: ""
+            HistorialScreen(navController = navController, username = username)
         }
     }
 }
