@@ -2,6 +2,7 @@ package com.pasteleria
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.pasteleria.ui.boleta.BoletaScreen
@@ -18,9 +19,12 @@ class BoletaScreenTest {
     @Test
     fun boletaScreen_muestra_elementos() {
         composeTestRule.setContent {
-            BoletaScreen(navController = rememberNavController())
+            BoletaScreen(
+                navController = rememberNavController(),
+                boletaViewModel = viewModel()
+            )
         }
 
-        composeTestRule.onNodeWithText("Carrito de Compras").assertExists()
+        composeTestRule.onNodeWithText("Mi Carrito").assertExists()
     }
 }
