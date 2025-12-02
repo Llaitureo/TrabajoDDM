@@ -11,7 +11,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.huertohogar"
+        applicationId = "com.pasteleria.milsabores"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -23,6 +23,15 @@ android {
         resValue("string", "mapbox_access_token", "pk.eyJ1IjoicGFwaXRvYmFsIiwiYSI6ImNtaWpmbHlscDExYjAzZXBsdGttZGNnNjcifQ.x2CS0Gcyp5hiZCfqBeBBXQ")
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("pasteleria-release.jks")
+            storePassword = "pasteleria123"
+            keyAlias = "pasteleria"
+            keyPassword = "pasteleria123"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -30,6 +39,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
