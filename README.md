@@ -37,3 +37,33 @@ La aplicación cuenta con las siguientes características implementadas:
 1. **Clonar el repositorio:**
    ```bash
    git clone [URL_DE_TU_REPOSITORIO]
+
+
+## 📖 Manual de Uso de la Aplicación
+
+### 1. Inicio de Sesión y Registro
+* **Registro:** Si eres un usuario nuevo, selecciona la opción "¿No tienes cuenta? Regístrate aquí" en la pantalla de inicio. Completa el formulario con tu nombre de usuario, contraseña, fecha de nacimiento y código promocional (opcional).
+* **Login:** Ingresa tus credenciales en la pantalla principal.
+    * *Credencial de prueba (Admin):* Usuario `admin` / Contraseña `123`.
+
+### 2. Navegación Principal (Home)
+Una vez dentro, verás el **Catálogo de Productos** con imágenes y precios. En la barra superior encontrarás los accesos directos a las funciones principales:
+* 🗺️ **Mapa:** Icono de mapa a la izquierda (Visualiza la ubicación de la tienda).
+* 📷 **Escáner QR:** Icono de código QR (Para escanear códigos de productos o promociones).
+* 👤 **Perfil:** Icono de persona (Ver tus datos y descuentos activos).
+* 🛒 **Carrito:** Icono de boleta larga (Ver tus productos seleccionados).
+* 📜 **Historial:** Icono de recibo (Ver tus compras anteriores).
+
+### 3. Cómo Realizar una Compra
+1. **Seleccionar Producto:** Toca cualquier producto del catálogo (ej. "Torta de Chocolate") para ver su detalle.
+2. **Agregar al Carrito:** En la pantalla de detalle, usa los botones `+` y `-` para definir la cantidad y presiona "Confirmar Pedido".
+3. **Revisar Carrito:** Ve al icono del carrito (🛒). Aquí podrás:
+    * Aumentar o disminuir cantidades de cada ítem.
+    * Eliminar productos individuales (Icono de basura rojo).
+    * Vaciar todo el carrito (Icono de basura en la barra superior).
+4. **Pagar:** Presiona el botón "Pagar ahora". Se mostrará un cuadro de confirmación con el total. Al confirmar, la orden se guardará en tu historial.
+
+### 4. Funciones Adicionales
+* **Mapa de Tiendas:** Utiliza Mapbox para mostrarte la ubicación exacta de la pastelería.
+* **Perfil y Descuentos:** En la sección "Mi Perfil" podrás ver si tienes descuentos aplicados automáticamente por edad (50%), por código promocional o por cumpleaños.
+* **Escáner QR:** Al presionar el icono, se abrirá la cámara para escanear códigos QR relevantes para la tienda.
