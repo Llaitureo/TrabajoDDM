@@ -5,7 +5,7 @@ Proyecto de aplicación móvil Android para la gestión y compra de productos de
 ## 👥 Integrantes del Equipo
 * **[Fernanda LLaitureo]**
 * **[Monserrat Huarapil]**
-* **[Cristian Huinca]**
+* **[Cristóbal Huinca]**
 * **[Benjamin valdebenito]**
 
 ## 📱 Funcionalidades
